@@ -23,7 +23,7 @@ message['Subject'] = "Happy Birthday!"
 message['From'] = gmail_email
 message['To'] = email_receiver
 
-with open("letter_1.txt", mode='r') as letter:
+with open("letter_templates/letter_1.txt", mode='r') as letter:
     name = str(birthdays.iat[0, 0])
     email_letter = letter.read().replace("[NAME]", name)
     message.set_content(email_letter)
