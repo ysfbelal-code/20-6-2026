@@ -2,8 +2,10 @@ import pandas as pd
 import smtplib
 from email.message import EmailMessage
 import datetime as dt
-from os import environ
+from dotenv import load_dotenv
+from os import getenv
 
+load_dotenv("secrets.env")
 #---------------Extracting month and day--------------#
 now = dt.datetime.now()
 month = now.month
@@ -11,9 +13,10 @@ day = now.day
 
 #------------Setting up the birthday wish--------------#
 birthdays = pd.read_csv("birthdays.csv")
-gmail_email = environ.get("ysfbelal874@gmail.com")
-gmail_password = "llqt gnym rgxh hiqz"
-email_receiver = "testing_python19@yahoo.com"
+
+gmail_email = getenv("GMAIL_EMAIL")
+gmail_password = getenv("GMAIL_PASSWORD")
+email_receiver = getenv("EMAIL_RECIEVER")
 
 message = EmailMessage()
 message['Subject'] = "Happy Birthday!"
@@ -29,15 +32,15 @@ with open("letter_1.txt", mode='r') as letter:
 num_month = birthdays[birthdays['name'] == 'John']['month'].values.item()
 num_day = birthdays[birthdays['name'] == 'John']['day'].values.item()
 
-if month == num_month and day == num_day:
-    try:
-        with smtplib.SMTP('smtp.gmail.com', 587) as connection:
-            connection.starttls()
-            connection.login(gmail_email, gmail_password)
-            connection.send_message(message)
-    except Exception:
-        print("Failed to send email.")
-    else:
-        print("Email sent!")
+# if month == num_month and day == num_day:
+try:
+    with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+        connection.starttls()
+        connection.login(gmail_email, gmail_password)
+        connection.send_message(message)
+except Exception:
+    print("Failed to send email.")
 else:
-    print("It's not their birthday today :(")
+    print("Email sent!")
+# else:
+#     print("It's not their birthday today :(")
